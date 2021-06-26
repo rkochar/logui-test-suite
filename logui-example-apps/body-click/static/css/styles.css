@@ -1,0 +1,46 @@
+div#green-box {
+    width: 400px;
+    height: 300px;
+    position: absolute;
+    left: 50px;
+    top: 150px;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: green;
+    color: #FFF;
+    font-size: 24pt;
+    font-weight: bold;
+}
+
+div#another-box {
+    position: absolute;
+    left: 500px;
+    top: 150px;
+    width: 400px;
+    height: 300px;
+    box-sizing: border-box;
+    background-color: #555;
+}
+
+div#another-box p {
+    padding: 0 10px 0 10px;
+    color: #FFF;
+}
+
+div#another-box ul {
+    list-style-type: none;
+    padding: 10px;
+    background-color: red;
+}
+
+div#another-box ul li {
+    margin-bottom: 10px;
+    background-color: wheat;
+}
+
+div#another-box ul li span.title {
+    display: block;
+    background-color: rgba(222,184,135,0.5);
+    font-weight: bold;
+    font-size: 18pt;
+}

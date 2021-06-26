@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <link rel="stylesheet" type="text/css" href="static/css/normalize.css" />
+        <link rel="stylesheet" type="text/css" href="static/css/styles.css" />
+        <title>SampleSearch</title>
+    </head>
+
+    <body>
+
+        <header>
+            <form id="search-form">
+                <img src="static/img/logo.svg" alt="Sample Search" />
+                <div>
+                    <input id="input-box" />
+                    <button id="submit-button">Search</button>
+                </div>
+            </form>
+        </header>
+
+        <a href="./test_url.html">
+            <button>Click Me</button>
+        </a>
+
+
+        <main>
+            <div id="left-rail">
+
+                <span id="landing-instructions">
+                    <p>
+                    <strong style="color: red;">Before you start, put a <code>logui.bundle.js</code> file into the <code>static</code> directory!</strong>
+                    </p>
+                    <p>
+                    <strong>This is a basic JavaScript-driven webpage that shows you how to integrate LogUI into your application.</strong>
+                    View the developer console in your browser to check that the LogUI client has started.
+                    You can then start interacting with the query box above, and type a query. Submit the query and watch the console as you interact with elements on the page.<br />
+                    </p>
+                    <p>
+                    You can look at the <code>driver.js</code> module for insight into how you can control the LogUI client library, and what you need to pass to it. Tweak the settings and see what changes in the logged interactions.
+                    </p>
+                </span>
+
+                <span class="results-stats">Results for <span id="query-text">?</span>, appended after DOM load</span>
+
+                <ul class="results" id="left-rail-results">
+                    <!-- Added programmatically -->
+                </ul>
+            </div>
+
+            <div id="right-rail">
+                <div class="entity" id="entity-card">
+                    <img src="static/img/delft.jpg" alt="Delft" />
+                    <span class="header">Delft</span>
+                    <span class="subheader">City in The Netherlands</span>
+                    <span class="blurb">Delft, a canal-ringed city in the western Netherlands, is known as the manufacturing base for Delftware, hand-painted blue-and-white pottery. In its old town, the medieval Oude Kerk is the burial site of native son and Dutch Master painter Johannes Vermeer. Once the seat of the royal House of Orange, the 15th-century Nieuwe Kerk houses the family's tombs and overlooks Delft's lively market square.</span>
+                    <span class="attribute">
+                        <span class="type">Area</span>
+                        <span class="value">24.06 sq km</span>
+                    </span>
+                    <span class="attribute">
+                        <span class="type">City Hall</span>
+                        <span class="value">Delft City Hall</span>
+                    </span>
+                    <span class="attribute">
+                        <span class="type">Province</span>
+                        <span class="value">South Holland</span>
+                    </span>
+                </div>
+            </div>
+        </main>
+
+    </body>
+
+    <script src="static/logui.bundle.js"></script>
+    <script src="./static/js/driver.js"></script>
+
+</html>

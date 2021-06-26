@@ -1,0 +1,94 @@
+{
+    "logUIConfiguration": {
+        "endpoint": "ws://localhost:8000/ws/endpoint/",
+        "authorisationToken": "eyJ0eXBlIjoibG9nVUktYXV0aG9yaXNhdGlvbi1vYmplY3QiLCJhcHBsaWNhdGlvbklEIjoiMjQ5NGQzZjgtNjMxZS00YWNlLWJiNDctODE3MGJiNzQ5OTc0IiwiZmxpZ2h0SUQiOiI1YjQ5ODA5Yi1lMDk3LTRlZDItOThiZC05ZDg5ZmU2Y2EwNGQifQ:1ll8mx:hhRMp-2Peo8HFBCFuyemHdfd4bPR5pWRsQGdMWBnAOw",
+        "verbose": true
+    },
+    "browserEvents": {
+        "blockEventBubbling": true,
+        "eventsWhileScrolling": true,
+        "URLChanges": true,
+        "contextMenu": true,
+        "pageFocus": true,
+        "trackCursor": true,
+        "cursorUpdateFrequency": 4000,
+        "cursorLeavingPage": true
+    },
+    "applicationSpecificData": {
+        "userID": "test_rahul1"
+    },
+    "trackingConfiguration": {
+        "querybox-focus": {
+            "selector": "#input-box",
+            "event": "focus",
+            "name": "QUERYBOX_FOCUS"
+        },
+        "querybox-losefocus": {
+            "selector": "#input-box",
+            "event": "blur",
+            "name": "QUERYBOX_BLUR"
+        },
+        "querybox-change": {
+            "selector": "#input-box",
+            "event": "keyup",
+            "name": "QUERYBOX_CHANGE",
+            "metadata": [
+                {
+                    "nameForLog": "value",
+                    "sourcer": "elementProperty",
+                    "lookFor": "value"
+                }
+            ]
+        },
+        "query-submission": {
+            "selector": "#search-form",
+            "event": "formSubmission",
+            "name": "QUERY_SUBMITTED",
+            "properties": {
+                "includeValues": [
+                    {
+                        "nameForLog": "completeQuery",
+                        "sourcer": "elementProperty",
+                        "selector": "#input-box",
+                        "lookFor": "value"
+                    }
+                ]
+            }
+        },
+        "left-rail-item-mousemovements": {
+            "selector": "#left-rail-results li",
+            "event": "mouseHover",
+            "properties": {
+                "mouseenter": {
+                    "name": "LEFT_RAIL_RESULT_HOVER_IN"
+                },
+                "mouseleave": {
+                    "name": "LEFT_RAIL_RESULT_HOVER_OUT"
+                }
+            },
+            "metadata": [
+                {
+                    "nameForLog": "resultRank",
+                    "sourcer": "elementAttribute",
+                    "lookFor": "data-rank"
+                }
+            ]
+        },
+        "left-rail-item-mouseclick": {
+            "selector": "#left-rail-results li span.title a",
+            "event": "contextmenu"
+        },
+        "entity-mousemovements": {
+            "selector": "#entity-card",
+            "event": "mouseHover",
+            "properties": {
+                "mouseenter": {
+                    "name": "ENTITY_CARD_HOVER_IN"
+                },
+                "mouseleave": {
+                    "name": "ENTITY_CARD_HOVER_OUT"
+                }
+            }
+        }
+    }
+}

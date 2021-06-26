@@ -1,0 +1,173 @@
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url(../fonts/roboto-300-l.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url(../fonts/roboto-700-l.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    display: grid;
+    overflow: hidden;
+    grid-template-rows: 100px auto;
+    font-family: 'Roboto', sans-serif;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: #F5F5F5;
+    -moz-box-shadow:    3px 3px 5px 6px #DEDEDE;
+    -webkit-box-shadow: 3px 3px 5px 6px #DEDEDE;
+    box-shadow:         3px 3px 5px 6px #DEDEDE;
+}
+
+    header img {
+        margin: 1.5vh 0 0 4vh;
+        width: 200px;
+    }
+
+    header div {
+        display: inline;
+        position: relative;
+        top: -20px;
+        margin-left: 3vh;
+    }
+
+    header input {
+        width: 300px;
+        font-size: 16pt;
+        padding: 5px;
+    }
+
+    header button {
+        font-size: 16pt;
+        font-weight: bold;
+        padding: 5px;
+        margin-left: 0.5vh;
+    }
+
+main {
+    display: flex;
+    overflow-y: auto;
+}
+
+div#left-rail {
+    flex: 0.7;
+    margin: 4vh 1vh 2vh 4vh;
+}
+
+span.results-stats {
+    font-size: 16pt;
+}
+
+span.results-stats span {
+    font-weight: bold;
+}
+
+div#right-rail {
+    flex: 0.3;
+    margin: 4vh 4vh 2vh 1vh;
+}
+
+ul.results {
+    list-style-type: none;
+    margin: 4vh 0 0 0;
+    padding: 0;
+}
+
+ul.results li {
+    margin-bottom: 3vh;
+}
+
+ul.results li span.title {
+    display: block;
+    font-size: 16pt;
+    font-weight: bold;
+    margin-bottom: 0.5vh;
+}
+
+ul.results li span.url {
+    display: block;
+    color: green;
+    margin-bottom: 0.5vh;
+}
+
+ul.results li span.snippet {
+    display: block;
+    line-height: 1.5;
+}
+
+div.entity {
+    background-color: #E1E1E1;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+div.entity img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+div.entity span.header {
+    display: block;
+    font-size: 24pt;
+    font-weight: bold;
+    margin: 1vw 0 0.5vw 0;
+}
+
+div.entity span.subheader {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 1vw;
+}
+
+div.entity span.blurb {
+    line-height: 1.5;
+    margin-bottom: 1vw;
+}
+
+div.entity span.attribute {
+    margin: 1vw 0 0 0;
+    display: block;
+}
+
+div.entity span.attribute span.type {
+    font-weight: bold;
+}
+
+#entity-card {
+    display: none;
+}
+
+.results-stats {
+    display: none;
+}
+
+#landing-instructions {
+    font-size: 14pt;
+    line-height: 1.5;
+}
+
+#landing-instructions p {
+    margin: 0 0 2vw 0;
+}
+
+#left-rail-results li {
+}

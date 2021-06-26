@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <link rel="stylesheet" type="text/css" href="static/css/normalize.css" />
+        <link rel="stylesheet" type="text/css" href="static/css/styles.css" />
+        <title>Body Click Example</title>
+    </head>
+
+    <body>
+
+        <header>
+            <h1 id="header">Body Click Example</h1>
+        </header>
+
+        <main>
+            <p>This page should have a listener appended for <code>click</code> events <em>anywhere on the page.</em> Another <code>click</code> event exists on the green box. Try it out.</p>
+            <p>Clicking anywhere <em>except</em> the green box will trigger an <code>ANY_CLICK</code> event.</p>
+
+            <div id="green-box">
+                Click me for a different event!
+                <code>(GREEN_BOX_CLICK)</code>
+            </div>
+
+            <div id="another-box">
+                <p>Hover events are attached to <code>li</code> elements below. These will fire even if hovering over a further child element. Hover events will only be triggered inside the yellow boundaries; the red box should trigger no hover events.</p>
+
+                <ul>
+                    <li data-rank="position1">
+                        <span class="title" id="first-title">Item title</span>
+                        <span class="blurb">Blah blah blah blah</span>
+                    </li>
+                    <li data-rank="position2">
+                        <span class="title">Item title</span>
+                        <span class="blurb">Blah blah blah blah</span>
+                    </li>
+                    <li data-rank="position3">
+                        <span class="title">Item title</span>
+                        <span class="blurb">Blah blah blah blah</span>
+                    </li>
+                    <li data-rank="position4">
+                        <span class="title">Item title</span>
+                        <span class="blurb">Blah blah blah blah</span>
+                    </li>
+                </ul>
+            </div>
+        </main>
+
+    </body>
+
+    <script src="./static/js/logui.bundle.js"></script>
+    <script>
+        let configurationObject = {
+            logUIConfiguration: {
+                endpoint: 'ws://linuxvm:8000/ws/endpoint/',
+                authorisationToken: 'eyJ0eXBlIjoibG9nVUktYXV0aG9yaXNhdGlvbi1vYmplY3QiLCJhcHBsaWNhdGlvbklEIjoiZjNlMmNiYjktZmZhMC00MDFkLWFiZDEtNWJiNTJmNWNlMzM1IiwiZmxpZ2h0SUQiOiI5YWQ0YmI1Yy0yNjBhLTQ2MjUtODQwYS0wNmZhN2M4Y2U5MTEifQ:1lQnHb:XnrZYSB5yRfeD2snhvbxZCRRPlvr6wgCWppfqiKbA0A',
+                verbose: true,
+                browserEvents: {
+                    trackCursor: false,
+                }
+            },
+            applicationSpecificData: {},
+            trackingConfiguration: {
+                // Low-level event, on ANY item on the page, fire a ANY_CLICK event.
+                'all-click': {
+                    selector: '*',
+                    event: 'click',
+                    name: 'ANY_CLICK',
+                },
+                // Specific for the green box, override and register a GREEN_BOX_CLICK event (instead of ANY_CLICK).
+                'green-click': {
+                    selector: '#green-box',
+                    event: 'click',
+                    name: 'GREEN_BOX_CLICK',
+                },
+                // Dealing with hovering, hover on a li child in the <ul> element.
+                // Includes example of a metadata sourcer.
+                'list-hover': {
+                    selector: '#another-box ul li',
+                    event: 'mouseHover',
+                    properties: {
+                        mouseenter: {
+                            name: 'LIST_ITEM_HOVER_IN',
+                        },
+                        mouseleave: {
+                            name: 'LIST_ITEM_HOVER_OUT',
+                        }
+                    },
+                    metadata: [
+                        {
+                            lookFor: 'data-rank',
+                            nameForLog: 'positionInList',
+                            sourcer: 'elementAttribute',
+                        }
+                    ],
+                },
+                // Override the <li> hover event -- replace for the first item in the list.
+                // Has a special FIRST_ITEM_TITLE_HOVER_X event.
+                'first-item-title-hover': {
+                    selector: '#first-title',
+                    event: 'mouseHover',
+                    properties: {
+                        mouseenter: {
+                            name: 'FIRST_ITEM_TITLE_HOVER_IN',
+                        },
+                        mouseleave: {
+                            name: 'FIRST_ITEM_TITLE_HOVER_OUT',
+                        }
+                    },
+                },
+                // Overrides the global ANY_CLICK event on the first item in the <UL>.
+                'first-item-title-click': {
+                    selector: '#first-title',
+                    event: 'click',
+                    name: 'FIRST_ITEM_TITLE_CLICK',
+                },
+            },
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.LogUI) {
+                LogUI.init(configurationObject);
+            }
+        });
+    </script>
+
+</html>
