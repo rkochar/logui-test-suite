@@ -1,32 +1,21 @@
-import datetime
-from random import randint
 import time
 
 import pytest
-import os
-import pandas as pd
-
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.wait import WebDriverWait
 
-from main import login, has_xpath, make_application, add_new_flight, disable_flight, \
-    get_authorization_token, driver_hardcode, replace_auth_token, download_test_logs, \
-    click_xpath, goto_application, clear_logs, log_parser, rename_logfile, element_loaded, \
-    rightclick_xpath, doubleclick_xpath, get_browsers, get_xpath
+from main import has_xpath, make_application, add_new_flight, disable_flight, \
+    get_authorization_token, driver_hardcode, download_test_logs, \
+    click_xpath, clear_logs, log_parser, rename_logfile, rightclick_xpath, doubleclick_xpath, get_browsers, has_xpath_loaded
 
 application_index, flight_index = None, 1
 domain = "http://localhost"
-file = '/home/rkochar/Projects/Python/Selenium/logui-example-apps/sample-search/static/js/driver.js'
-driver_js_file = '/home/rkochar/Projects/Python/Selenium/logui-example-apps/sample-search/index.html'
-
-logs_directory = ""
-for x in os.getcwd().split('/')[:-1]:
-    logs_directory += x + "/"
-logs_directory += "logs/"
-
+file = '/home/rkochar/Projects/Python/logui-test-suite/logui-example-apps/sample-search/static/js/driver.js'
+driver_js_file = '/home/rkochar/Projects/Python/logui-test-suite/logui-example-apps/sample-search/index.html'
+logs_directory = '/home/rkochar/Projects/Python/logui-test-suite/logs/'
 
 class Test:
     """
@@ -47,7 +36,7 @@ class Test:
 
         global application_index
         application_index = str(get_application_index())
-        make_application(driver=webdriver.Chrome(), application_index=application_index)
+        make_application(application_index=application_index)
 
         yield  # [application_index, flight_index, domain, file]
 
@@ -65,10 +54,11 @@ class Test:
         :return:
         """
         global application_index, flight_index, domain
+
         flight_index += 1
 
         d = add_new_flight(application_index=application_index,
-                           flight_index=application_index + "-" + str(flight_index),
+                           flight_name=application_index + "-" + str(flight_index),
                            domain=domain)
         auth_token = get_authorization_token(driver=d, flight_index=str(flight_index))
         print(auth_token)
@@ -103,7 +93,6 @@ class Test:
     #     assert "As settings are added allowing you to customise this instance of the LogUI server, they will appear here." == text
     #     driver.close()
 
-    # Done
     @pytest.mark.parametrize("driver", get_browsers())
     def test_page_focus(self, before_each, driver):
         """
@@ -317,6 +306,7 @@ class Test:
         time.sleep(10)
         click_xpath(driver=driver, xpath="/html/body/main/div[1]/ul/li[1]/span[1]/a",
                     name="Click first link")
+        time.sleep(3)
         driver.close()
 
         global logs_directory
@@ -386,7 +376,6 @@ class Test:
     #####################################################################################################
     ####### LEFT CLICK ##################################################################################
     #####################################################################################################
-        # Done - flaky test for chrome: File not found
     @pytest.mark.parametrize("driver", get_browsers())
     def test_click_once(self, before_each, driver):
         """
@@ -612,6 +601,7 @@ class Test:
     @pytest.mark.parametrize("driver", get_browsers())
     def test_rightclick_thrice(self, before_each, driver):
         """
+        Test multiple right clicks.
 
         :param before_each: Setup LogUI infrastructure.
         :param driver: Browser driver
@@ -657,6 +647,7 @@ class Test:
     @pytest.mark.parametrize("driver", get_browsers())
     def test_doubleclick_once(self, before_each, driver):
         """
+        Simple test for double click. Double right click should trigger interaction (event context) menu listener.
 
         :param before_each: Setup LogUI infrastructure.
         :param driver: Browser driver
@@ -693,6 +684,7 @@ class Test:
     @pytest.mark.parametrize("driver", get_browsers())
     def test_doubleclick_thrice(self, before_each, driver):
         """
+        Test another double click.
 
         :param before_each: Setup LogUI infrastructure.
         :param driver: Browser driver
@@ -734,6 +726,7 @@ class Test:
     @pytest.mark.parametrize("driver", get_browsers())
     def test_doubleclick_thrice(self, before_each, driver):
         """
+        Test multiple double clicks.
 
         :param before_each: Setup LogUI infrastructure.
         :param driver: Browser driver
@@ -779,6 +772,7 @@ class Test:
     @pytest.mark.parametrize("driver", get_browsers())
     def test_hover_once(self, before_each, driver):
         """
+        Test simple hover.
 
         :param before_each: Setup LogUI infrastructure.
         :param driver: Browser driver
@@ -812,8 +806,9 @@ class Test:
 
     # Chrome does not record event, at all. Ff records one with 38Z difference
     @pytest.mark.parametrize("driver", get_browsers())
-    def test_hover_thrice_counts_once(self, before_each, driver):
+    def test_hover_thrice(self, before_each, driver):
         """
+        Test hovering on the same element thrice.
 
         :param before_each: Setup LogUI infrastructure.
         :param driver: Browser driver
@@ -834,7 +829,7 @@ class Test:
         global logs_directory
         download_test_logs(application_index=application_index, flight_index=flight_index,
                            logs_directory=logs_directory, wait_time=10)
-        log_name = str(flight_index) + "-test_hover_thrice_counts_once"
+        log_name = str(flight_index) + "-test_hover_thrice"
         rename_logfile(flight_index=log_name, logs_directory=logs_directory)
 
         output = log_parser(flight_index=log_name, logs_directory=logs_directory)
@@ -852,13 +847,13 @@ class Test:
                     assert o['eventDetails']['name'] == 'LEFT_RAIL_RESULT_HOVER_IN'
                     count_out += 1
 
-        assert 1 == count_in == count_out
+        assert 3 == count_in == count_out
 
 
-    # Done
     @pytest.mark.parametrize("driver", get_browsers())
     def test_hover_different(self, before_each, driver):
         """
+        Test hovering on different elements.
 
         :param before_each: Setup LogUI infrastructure.
         :param driver: Browser driver
@@ -868,8 +863,10 @@ class Test:
         driver.find_element_by_xpath("//*[@id=\"input-box\"]").send_keys("D")
         click_xpath(driver=driver, xpath="//*[@id=\"submit-button\"]", name="Click submit")
 
+        time.sleep(5)
         url_to_hover = driver.find_element_by_xpath(xpath="/html/body/main/div[1]/ul/li[1]/span[1]/a")
         ActionChains(driver=driver).move_to_element(url_to_hover).perform()
+        time.sleep(5)
         new_url = driver.find_element_by_xpath(xpath="/html/body/main/div[2]/div/img")
         ActionChains(driver=driver).move_to_element(new_url).perform()
         time.sleep(3)
@@ -911,12 +908,11 @@ class Test:
                 break
             i += 1
 
-        assert True
-
     # Done
     @pytest.mark.parametrize("driver", get_browsers())
     def test_hover_hover_click_hover(self, before_each, driver):
         """
+        Test the sequence of hovering over two different elements, click and then another hover.
 
         :param before_each: Setup LogUI infrastructure.
         :param driver: Browser driver
@@ -1009,6 +1005,7 @@ class Test:
     @pytest.mark.parametrize("driver", get_browsers())
     def test_drag_drop(self, before_each, driver):
         """
+        Test drag and drop.
 
         :param before_each: Setup LogUI infrastructure.
         :param driver: Browser driver
@@ -1018,10 +1015,10 @@ class Test:
         driver.find_element_by_xpath("//*[@id=\"input-box\"]").send_keys("D")
         click_xpath(driver=driver, xpath="//*[@id=\"submit-button\"]", name="Click submit")
 
-        source_element = get_xpath(driver=driver, xpath='/html/body/main/div[1]/ul/li[1]/span[1]/a',
-                                   name="Drag source element")
-        target_element = get_xpath(driver=driver, xpath='//*[@id="input-box"]',
-                                   name='Drag target element')
+        source_element = has_xpath_loaded(driver=driver, xpath='/html/body/main/div[1]/ul/li[1]/span[1]/a',
+                                          name="Drag source element")
+        target_element = has_xpath_loaded(driver=driver, xpath='//*[@id="input-box"]',
+                                          name='Drag target element')
         time.sleep(5)
         webdriver.ActionChains(driver).drag_and_drop(source_element, target_element).perform()
         webdriver.ActionChains(driver).drag_and_drop(source_element, target_element).perform()
@@ -1066,6 +1063,7 @@ class Test:
     @pytest.mark.parametrize("driver", get_browsers())
     def test_very_complex(self, before_each, driver):
         """
+        Combination of different interactions such as double click, hover, click and right click.
 
         :param before_each: Setup LogUI infrastructure.
         :param driver: Browser driver
@@ -1078,25 +1076,23 @@ class Test:
         click_xpath(driver=driver, xpath="//*[@id=\"submit-button\"]", name="Click submit")
         time.sleep(5)
 
-        #  double click stats -> hover on span list.result ->
+        # double click stats -> hover on span list.result ->
         doubleclick_xpath(driver=driver, xpath="/html/body/main/div[1]/span[2]",
                           name="Double click result stat")
         time.sleep(5)
         url_hover = driver.find_element_by_xpath(xpath="/html/body/main/div[1]/ul/li[1]/span[1]/a")
         ActionChains(driver=driver).move_to_element(url_hover).perform()
         time.sleep(5)
-        rightclick_xpath(driver=driver, xpath="/html/body/main/div[1]/ul/li[1]/span[1]/a",
-                         name="Rightlick first link")
-        time.sleep(5)
         image_hover = driver.find_element_by_xpath(xpath="/html/body/main/div[2]/div/img")
         ActionChains(driver=driver).move_to_element(image_hover).perform()
         time.sleep(5)
-        # Hover back to first url and click first link
-        ActionChains(driver=driver).move_to_element(url_hover).perform()
+
+        rightclick_xpath(driver=driver, xpath="/html/body/main/div[1]/ul/li[1]/span[1]/a",
+                         name="Rightlick first link")
         time.sleep(5)
-        # click_xpath(driver=driver, xpath="/html/body/main/div[1]/ul/li[1]/span[1]/a",
-        #             name="Click first link")
-        # time.sleep(1)
+        click_xpath(driver=driver, xpath="/html/body/main/div[1]/ul/li[1]/span[1]/a",
+                    name="Click first link")
+        time.sleep(3)
         driver.quit()
 
         global logs_directory
@@ -1236,6 +1232,7 @@ class Test:
     @pytest.mark.parametrize("driver", get_browsers())
     def test_doubleclick_hover_thrice(self, before_each, driver):
         """
+        Test repeated hovers on different elements of DOM and returning to them.
 
         :param before_each: Setup LogUI infrastructure.
         :param driver: Browser driver
@@ -1321,7 +1318,16 @@ class Test:
 #################################################################################
 ##### HEPLER METHODS ############################################################
 #################################################################################
+
 def left_rail_mouse_enter(i, num_lines, output):
+    """
+    Assert mouse entering left_rail element.
+
+    :param i: current row number of log file
+    :param num_lines: of logs
+    :param output: logs
+    :return: boolean
+    """
     while i < num_lines:
         if output[i]['eventType'] == 'interactionEvent':
             print(output[i])
@@ -1333,6 +1339,14 @@ def left_rail_mouse_enter(i, num_lines, output):
 
 
 def left_rail_mouse_leave(i, num_lines, output):
+    """
+    Assert mouse leaving left_rail element.
+
+    :param i: current row number of log file
+    :param num_lines: of logs
+    :param output: logs
+    :return: boolean
+    """
     while i < num_lines:
         if output[i]['eventType'] == 'interactionEvent':
             assert output[i]['eventDetails']['type'] == 'mouseleave'
@@ -1343,6 +1357,14 @@ def left_rail_mouse_leave(i, num_lines, output):
 
 
 def entity_card_hover_in(i, num_lines, output):
+    """
+    Assert hovering on entity_card element.
+
+    :param i: current row number of log file
+    :param num_lines: of logs
+    :param output: logs
+    :return: boolean
+    """
     while i < num_lines:
         if output[i]['eventType'] == 'interactionEvent':
             assert output[i]['eventDetails']['type'] == 'mouseenter'
@@ -1353,6 +1375,11 @@ def entity_card_hover_in(i, num_lines, output):
 
 
 def browser_started(output):
+    """
+    Assert browser has started.
+    :param output: logs
+    :return: boolean
+    """
     for o in output:
         if o['eventType'] == 'statusEvent':
             assert o['eventDetails']['type'] == 'started'
@@ -1361,6 +1388,13 @@ def browser_started(output):
 
 
 def assert_query_box_interaction(output, num_lines):
+    """
+    Assert pre-decided interations with query page of test html page.
+
+    :param output: logs
+    :param num_lines: Number of lines of log file
+    :return: boolean
+    """
     i = 0
     while i < num_lines:
         if output[i]['eventType'] == 'interactionEvent':
@@ -1392,21 +1426,26 @@ def assert_query_box_interaction(output, num_lines):
         if output[i]['eventType'] == 'interactionEvent':
             assert output[i]['eventDetails']['type'] == 'submit'
             assert output[i]['eventDetails']['name'] == 'QUERY_SUBMITTED'
-            i += 1
-            break
-        i += 1
-
-    while i < num_lines:
-        if output[i]['eventType'] == 'interactionEvent':
-            assert output[i]['eventDetails']['type'] == 'blur'
-            assert output[i]['eventDetails']['name'] == 'QUERYBOX_BLUR'
             return True, i + 1
         i += 1
+
+    # while i < num_lines:
+    #     if output[i]['eventType'] == 'interactionEvent':
+    #         assert output[i]['eventDetails']['type'] == 'blur'
+    #         assert output[i]['eventDetails']['name'] == 'QUERYBOX_BLUR'
+    #         return True, i + 1
+    #     i += 1
 
     assert False
 
 
 def html_page_loaded(output):
+    """
+    Assert html page has been loaded.
+
+    :param output: logs
+    :return: boolean
+    """
     if output[0]['eventType'] == 'statusEvent':
         assert output[0]['eventDetails']['type'] == 'started'
 
@@ -1430,6 +1469,11 @@ def html_page_loaded(output):
 
 
 def html_page_closed(output):
+    """
+    Assert that page is closed.
+    :param output: logs
+    :return: boolean
+    """
     assert output[-2]['eventType'] == 'browserEvent'
     assert output[-2]['eventDetails']['type'] == 'viewportResize' or "viewportFocusChange"
 
@@ -1440,6 +1484,12 @@ def html_page_closed(output):
 
 
 def delft_page_loaded(output):
+    """
+    Assert that a test html page is loaded.
+
+    :param output: logs
+    :return: boolean
+    """
     i = 0
     while output[i]['eventType'] != 'interactionEvent':
         i += 1
@@ -1471,14 +1521,24 @@ def delft_page_loaded(output):
 
 
 def get_application_index():
-    with open("./application.txt", "r") as file:
+    """
+    Find application index on logui.
+
+    :return: index of application
+    """
+    with open("/home/rkochar/Projects/Python/logui-test-suite/test/application.txt", "r") as file:
         index = file.readline()
     file.close()
-
     return index
 
 
 def login_check_four_href(driver):
+    """
+    Verify login on logui.
+
+    :param driver: of browser
+    :return: boolean
+    """
     # Verify that login button is not present.
 
     assert not has_xpath(driver=driver, xpath="/html/body/div[1]/main/section/p[2]/strong/a")

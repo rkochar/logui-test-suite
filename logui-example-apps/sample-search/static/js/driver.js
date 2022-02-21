@@ -101,7 +101,7 @@ async function startLogUIClient() {
         let configurationObject = {
             logUIConfiguration: {
                 endpoint: 'ws://localhost:8000/ws/endpoint/',
-                authorisationToken: 'eyJ0eXBlIjoibG9nVUktYXV0aG9yaXNhdGlvbi1vYmplY3QiLCJhcHBsaWNhdGlvbklEIjoiNDBkY2RlNmMtYjk2Ni00ZDMyLWIyYTUtZTk1ZWFjZDVlNTU1IiwiZmxpZ2h0SUQiOiI2ZDMzNDVkNS0zZWUzLTRmZjktYmNhZS04M2EyNTkwODQyNGQifQ:1lw39i:PP6scqMwMxUoMPbU-kC1BgEDIzTXXKtww0tRn1mdxJw',
+                authorisationToken: 'eyJ0eXBlIjoibG9nVUktYXV0aG9yaXNhdGlvbi1vYmplY3QiLCJhcHBsaWNhdGlvbklEIjoiYzQ5NzQyMzEtOGNhZC00MGYwLTkwOGUtNWY3YzBiNGViNmE0IiwiZmxpZ2h0SUQiOiI2YjFhYzlmMy0xZTI2LTRlMmItYTM1MS03YWFkZjRlYTNiOWMifQ:1lxZOD:hu2X8tXsaWvlAI7GURf0sdaNQ_0_wk853XXzGAWFbBo',
                 // The authentication token.
                 verbose: true,
                 browserEvents: {
@@ -111,7 +111,7 @@ async function startLogUIClient() {
                     contextMenu: true,
                     pageFocus: true,
                     trackCursor: true,
-                    cursorUpdateFrequency: 500,
+                    cursorUpdateFrequency: 1000,
                     cursorLeavingPage: true,
                 },
             },
@@ -124,11 +124,11 @@ async function startLogUIClient() {
                     event: 'focus',
                     name: 'QUERYBOX_FOCUS',
                 },
-                'querybox-losefocus': {
-                    selector: '#input-box',
-                    event: 'blur',
-                    name: 'QUERYBOX_BLUR',
-                },
+                // 'querybox-losefocus': {
+                //     selector: '#input-box',
+                //     event: 'blur',
+                //     name: 'QUERYBOX_BLUR',
+                // },
                 'querybox-change': {
                     selector: '#input-box',
                     event: 'keyup',
